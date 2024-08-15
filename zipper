@@ -1,1 +1,2 @@
+rm -f subsub.zip
 zip subsub.zip datastructures.cpp datastructures.h genericHash.h pirates24b2.cpp pirates24b2.h UnionFind.h dry.pdf
