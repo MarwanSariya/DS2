@@ -2,23 +2,27 @@
 #define DATASTRUCTURES_H
 
 #define N1 1000 // pirates
-#define M 100 // fleets
+#define M 100   // fleets
 
 #include <stdexcept>
 
-class Node {
+class Node
+{
 public:
     int fleetId;
     int numShips;
     int numPirates;
-    Node* next;
-    
+    Node *next;
+
     Node(int id, int ships);
 
-    void increase_num_pirates(int fleetId){
-        Node* current = this;
-        while (current != nullptr) {
-            if (current->fleetId == fleetId) {
+    void increase_num_pirates(int fleetId)
+    {
+        Node *current = this;
+        while (current != nullptr)
+        {
+            if (current->fleetId == fleetId)
+            {
                 current->numPirates += 1;
                 return;
             }
@@ -27,7 +31,8 @@ public:
     }
 };
 
-class LinkedList {
+class LinkedList
+{
 public:
     LinkedList();
     ~LinkedList();
@@ -35,15 +40,12 @@ public:
     bool contains(int fleetId) const;
     void insert(int fleetId, int numShips);
     void clear();
-    Node* head;
-
-
-   
+    Node *head;
 };
 
-class Hashtable {
+class Hashtable
+{
 public:
-
     Hashtable(int size);
     ~Hashtable();
 
@@ -52,26 +54,22 @@ public:
     void insert(int fleetId, int numShips);
     int hashFunction(int fleetId) const;
 
-
-
-    LinkedList* table;
+    LinkedList *table;
     int tableSize;
     int numofElements;
 
+    void expand()
+    {
+        int newSize = tableSize * 2;                    // Double the table size
+        LinkedList *newTable = new LinkedList[newSize]; // Allocate new table
 
-
-
-////////// my expand
-
-    void expand() {
-        int newSize = tableSize * 2; // Double the table size
-        LinkedList* newTable = new LinkedList[newSize]; // Allocate new table
-
-        for (int i = 0; i < tableSize; i++) {
-            Node* current = table[i].head;
-            while (current != nullptr) {
+        for (int i = 0; i < tableSize; i++)
+        {
+            Node *current = table[i].head;
+            while (current != nullptr)
+            {
                 int newIndex = current->fleetId % newSize; // Rehash the fleetId for new table
-                Node* next = current->next; // Store the next node
+                Node *next = current->next;                // Store the next node
 
                 // Move current node to new table
                 current->next = newTable[newIndex].head;
@@ -79,55 +77,63 @@ public:
 
                 current = next; // Move to the next node
             }
+
+            if (table[i].head != nullptr)
+            {
+                table[i].head = nullptr;
+            }
         }
 
-        delete table; // Delete the old table
-        table = newTable; // Update to the new table
+        delete[] table;      // Delete the old table
+        table = newTable;    // Update to the new table
         tableSize = newSize; // Update the table size
     }
 
-    Node* find(int fleetId) const {
-        Node* current = table[hashFunction(fleetId)].head;
-        while (current != nullptr) {
-            if (current->fleetId == fleetId) {
+    Node *find(int fleetId) const
+    {
+        Node *current = table[hashFunction(fleetId)].head;
+        while (current != nullptr)
+        {
+            if (current->fleetId == fleetId)
+            {
                 return current;
             }
             current = current->next;
         }
         return nullptr;
     }
-    
+
 private:
-   
-   
 };
 
-class PirateNode {
+class PirateNode
+{
 public:
     int pirateId;
     int fleetId;
     int money;
     int rank;
-    PirateNode* next;
+    PirateNode *next;
 
     PirateNode(int pirateId, int fleetId, int money, int rank);
 };
 
-class PirateLinkedList {
+class PirateLinkedList
+{
 public:
     PirateLinkedList();
     ~PirateLinkedList();
-    PirateNode* head;
+    PirateNode *head;
     bool contains(int pirateId) const;
     void insert(int pirateId, int fleetId, int money, int rank);
     bool update_salary(int pirateId, int salary);
     void clear();
 
 private:
-   
 };
 
-class PirateHashtable {
+class PirateHashtable
+{
 public:
     PirateHashtable(int size);
     ~PirateHashtable();
@@ -136,29 +142,28 @@ public:
     bool contains(int pirateId) const;
     void insert(int pirateId, int fleetId, int money, int rank);
     bool update_salary(int pirateId, int salary);
-    PirateLinkedList* table;
+    PirateLinkedList *table;
     int hashFunction(int pirateId) const;
     int getNumPirates(int fleetId) const;
-  
-    PirateNode& operator[](int pirateId) {
+
+    PirateNode &operator[](int pirateId)
+    {
         int index = hashFunction(pirateId);
-        PirateNode* current = table[index].head;
-        while (current != nullptr) {
-            if (current->pirateId == pirateId) {
+        PirateNode *current = table[index].head;
+        while (current != nullptr)
+        {
+            if (current->pirateId == pirateId)
+            {
                 return *current;
             }
             current = current->next;
         }
-    
-        throw std::invalid_argument("Pirate not found");
 
+        throw std::invalid_argument("Pirate not found");
     }
-  
+
 private:
-   
 };
 
-
-
 #endif
- // DATASTRUCTURES_H
+// DATASTRUCTURES_H

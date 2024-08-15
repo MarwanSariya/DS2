@@ -1,16 +1,16 @@
-// 
+//
 // 234218 Data Structures 1.
 // Semester: 2024B (spring).
 // Wet Exercise #2.
-// 
+//
 // Recommended TAB size to view this file: 8.
-// 
+//
 // The following header file contains all methods we expect you to implement.
 // You MAY add private methods and fields of your own.
 // DO NOT erase or modify the signatures of the public methods.
 // DO NOT modify the preprocessors in this file.
 // DO NOT use the preprocessors in your other code files.
-// 
+//
 
 #ifndef PIRATESA2_H_
 #define PIRATESA2_H_
@@ -19,22 +19,21 @@
 #include "genericHash.h"
 #include "UnionFind.h"
 
-class oceans_t {
+class oceans_t
+{
 private:
-
-
-	genericHash<int,shared_ptr<UnionFind>>* array;
+	genericHash<int, shared_ptr<UnionFind>> *array;
 	// we are using dynami array of UnionFind pointers to represent the fleets
 
 	int numOfElements; // meaning the numer of fleets
-    int realSize; // of the array
-    const int multiply=2;
+	int realSize;	   // of the array
+	const int multiply = 2;
 
-	Hashtable fleetTable;       // Hashtable for fleets
+	Hashtable fleetTable; // Hashtable for fleets
 
 	PirateHashtable pirateTable; // Hashtable for pirates
 
-	StatusType Union(int first_group , int second_group);
+	StatusType Union(int first_group, int second_group);
 
 public:
 	// <DO-NOT-MODIFY> {
@@ -58,18 +57,18 @@ public:
 
 	StatusType pirate_argument(int pirateId1, int pirateId2);
 
-    double getValue(int id){
-        //auto it=this->findHead(id);
-        auto it= array->find(id);
-        double res = 0;
-        while(it != nullptr) {
-            res += it->extra;
-            it=it->father;
-        }
-        return res;
-    };
-	
+	double getValue(int id)
+	{
+		// auto it=this->findHead(id);
+		auto it = array->find(id);
+		double res = 0;
+		while (it != nullptr)
+		{
+			res += it->extra;
+			it = it->father;
+		}
+		return res;
+	};
 };
 
 #endif // PIRATESA2_H_
-
