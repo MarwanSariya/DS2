@@ -11,9 +11,11 @@ private:
         Node* next;
 
         Node(const Key& k, const Value& v) : key(k), value(v), next(nullptr) {}
-        ~Node(){
-            delete next;
-        }
+        // ~Node(){
+        //     delete value;
+        //     delete next;
+        // }
+        ~Node() = default;
 
     };
 
@@ -55,6 +57,7 @@ public:
 
     ~genericHash() {
         // clear();
+        for 
         delete[] table;
     }
 
@@ -73,7 +76,6 @@ public:
             Node* curr = table[index];
             while (curr->next != nullptr) {
                 if (curr->key == key) {
-                    curr->value = value;
                     delete newNode;  // Free the newly created node to avoid memory leak
                     return;
                 }
@@ -82,7 +84,6 @@ public:
 
             // Handle the case where the matching key is the last node in the list
             if (curr->key == key) {
-                curr->value = value;
                 delete newNode;
             } else {
                 curr->next = newNode;
