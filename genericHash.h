@@ -54,7 +54,8 @@ public:
     }
 
     ~genericHash() {
-        clear();
+        // clear();
+        delete[] table;
     }
 
     void insert(const Key& key, const Value& value) {
