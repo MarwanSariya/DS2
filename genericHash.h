@@ -15,7 +15,9 @@ private:
         //     delete value;
         //     delete next;
         // }
-        ~Node() = default;
+        ~Node(){
+            // delete value;
+        };
 
     };
 
@@ -56,12 +58,18 @@ public:
     }
 
     ~genericHash() {
-        // clear();
-        for 
+        for (size_t i = 0; i < capacity; i++) {
+            Node* curr = table[i];
+            while (curr != nullptr) {
+                Node* next = curr->next;
+                delete curr;
+                curr = next;
+            }
+        }
         delete[] table;
     }
 
-    void insert(const Key& key, const Value& value) {
+    bool insert(const Key& key, const Value& value) {
  
 
         size_t index = key % capacity;
@@ -77,7 +85,7 @@ public:
             while (curr->next != nullptr) {
                 if (curr->key == key) {
                     delete newNode;  // Free the newly created node to avoid memory leak
-                    return;
+                    return false;
                 }
                 curr = curr->next;
             }
@@ -94,6 +102,7 @@ public:
         if (size + 1 >= capacity) {
             resize(capacity * 2);
         }
+        return true;
     }
 
     Value& find(const Key& key) const {
@@ -147,19 +156,19 @@ public:
 //    }
 
 ///// my clear
-    void clear() {
-        for (size_t i = 0; i < capacity; ++i) {
-            if (table[i] != nullptr) {
-                Node* current = table[i];
-                while (current != nullptr) {
-                    Node* toDelete = current;
-                    current = current->next;
-                    toDelete->next = nullptr;  // Avoid recursive deletion by breaking the chain
-                    delete toDelete;
-                }
-            }
-        }
-    }
+    // void clear() {
+    //     for (size_t i = 0; i < capacity; ++i) {
+    //         if (table[i] != nullptr) {
+    //             Node* current = table[i];
+    //             while (current != nullptr) {
+    //                 Node* toDelete = current;
+    //                 current = current->next;
+    //                 toDelete->next = nullptr;  // Avoid recursive deletion by breaking the chain
+    //                 delete toDelete;
+    //             }
+    //         }
+    //     }
+    // }
 
     size_t getSize() const {
         return size;
@@ -169,12 +178,12 @@ public:
         return capacity;
     }
 
-    Value& operator[](const Key& key) {
-        try {
-            return find(key);
-        } catch (const std::out_of_range&) {
-            insert(key, Value{});
-            return table[hash(key)]->value;
-        }
-    }
+    // Value& operator[](const Key& key) {
+    //     try {
+    //         return find(key);
+    //     } catch (const std::out_of_range&) {
+    //         insert(key, Value{});
+    //         return table[hash(key)]->value;
+    //     }
+    // }
 };

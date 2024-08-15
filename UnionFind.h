@@ -5,7 +5,9 @@
 
 #include "datastructures.h"
 #include <iostream>
+#include <memory>
 
+using namespace std;
 
 typedef enum {
     UNION_NULL_ARGS,
@@ -13,7 +15,7 @@ typedef enum {
     UNION_MEM_FAIL
 } statusUnion;
 
-class UnionFind{
+class UnionFind : public std::enable_shared_from_this<UnionFind> {
 public:
     int fleetId;
     int size; // num of ships in the fleet
@@ -22,8 +24,7 @@ public:
 
 
     int numofships;
-
-    UnionFind* father;
+    shared_ptr<UnionFind> father;
     
     //UnionFind()=default;
     explicit UnionFind(int fleet_id): fleetId(fleet_id),size(0),extra(0),numofships(1)
@@ -42,28 +43,28 @@ public:
 ////// my destructor
 
     ~UnionFind() {
-        if (father != nullptr) {
-            delete father;
-        }
+        // if (father != nullptr) {
+        //     delete father;
+        // }
     }
 
-UnionFind* find() {
-    auto tmp=this;
+shared_ptr<UnionFind> find() {
+    auto tmp = shared_from_this();
 
     while (tmp->father!= nullptr)
     {
         tmp=tmp->father;
     }
     return tmp;
-    auto it=this;
-    //if (it== nullptr) return tmp;
-    while (it->father!= nullptr)
-    {
-        auto x=it->father;
-        it->father=tmp;
-        it=x;
-    }
-    return tmp;
+    // auto it=this;
+    // //if (it== nullptr) return tmp;
+    // while (it->father!= nullptr)
+    // {
+    //     auto x=it->father;
+    //     it->father=tmp;
+    //     it=x;
+    // }
+    // return tmp;
 }
 
 
@@ -75,21 +76,21 @@ int getSize() {
 
 
 
-//UnionFind* findHead(int group_id){
-    UnionFind* findhead(){
+//shared_ptr<UnionFind> findHead(int group_id){
+    shared_ptr<UnionFind> findhead(){
 
-        UnionFind* tmp1 ;
-        //UnionFind* tmp2;
-        UnionFind* head;
+        shared_ptr<UnionFind> tmp1 ;
+        //shared_ptr<UnionFind> tmp2;
+        shared_ptr<UnionFind> head;
         //get the head
-        tmp1 = this;
+        tmp1 = shared_from_this();
         while (tmp1->father != nullptr)
         {
             tmp1 = tmp1->father;
         }
         head = tmp1; // root found
 
-        auto tmp=this;
+        auto tmp = shared_from_this();
         int sum_t=tmp->extra;
 
         while (tmp != head && tmp->father != head){
@@ -97,7 +98,7 @@ int getSize() {
             tmp = tmp->father;
         }
 
-        auto iterate=this;
+        auto iterate = shared_from_this();
         auto compress=iterate;
         int substract=0;
         while(iterate != head && iterate->father != head){

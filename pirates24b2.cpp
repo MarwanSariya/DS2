@@ -3,7 +3,7 @@
 
 
 
-//oceans_t::oceans_t() : array(new genericHash<int,UnionFind*>(128)), fleetTable(M), pirateTable(N1)
+//oceans_t::oceans_t() : array(new genericHash<int,shared_ptr<UnionFind>>(128)), fleetTable(M), pirateTable(N1)
 //{
 //
 //}
@@ -12,7 +12,7 @@
 //////////// my construct
 
 oceans_t::oceans_t() : array(nullptr),  numOfElements(0), realSize(0), fleetTable(M), pirateTable(N1) {
-    array = new genericHash<int, UnionFind*>(128);
+    array = new genericHash<int, shared_ptr<UnionFind>>(128);
     realSize = 128;
 }
 
@@ -96,7 +96,7 @@ oceans_t::oceans_t() : array(nullptr),  numOfElements(0), realSize(0), fleetTabl
 
 //oceans_t::~oceans_t(){
 //    for (int i = 0; i < numOfElements; ++i) {
-//        UnionFind* fleet = array->find(i);
+//        shared_ptr<UnionFind> fleet = array->find(i);
 //        delete fleet;
 //    }
 //    delete array; // Clean up dynamically allocated memory for the array
@@ -106,7 +106,7 @@ oceans_t::oceans_t() : array(nullptr),  numOfElements(0), realSize(0), fleetTabl
 //oceans_t::~oceans_t() {
 //    if (array) {
 //        for (int i = 0; i < numOfElements; ++i) {
-//            UnionFind* fleet = array->find(i);
+//            shared_ptr<UnionFind> fleet = array->find(i);
 //            delete fleet;
 //        }
 //        delete array; // Clean up dynamically allocated memory for the array
@@ -115,7 +115,7 @@ oceans_t::oceans_t() : array(nullptr),  numOfElements(0), realSize(0), fleetTabl
 oceans_t::~oceans_t() {
     // if (array) {
     //     for (int i = 0; i < realSize; ++i) {
-    //         UnionFind* fleet = array->find(i);
+    //         shared_ptr<UnionFind> fleet = array->find(i);
     //         if (fleet != nullptr) {
     //             delete fleet;
     //         }
@@ -161,8 +161,8 @@ StatusType oceans_t::add_fleet(int fleetId)
 	};
 
 	try {
-
-		array->insert(fleetId, new UnionFind(fleetId));
+		shared_ptr<UnionFind> new_node = make_shared<UnionFind>(fleetId);
+		array->insert(fleetId, new_node);
 	}
 	catch (std::bad_alloc&) {
 		return StatusType::ALLOCATION_ERROR; // Handle memory allocation errors
@@ -290,18 +290,18 @@ output_t<int> oceans_t::get_pirate_money(int pirateId) {
 /*
 StatusType oceans_t::Union(int first_group , int second_group){
 
-        UnionFind* first = array->find(first_group)->findhead();
-        UnionFind* second = array->find(second_group)->findhead();
+        shared_ptr<UnionFind> first = array->find(first_group)->findhead();
+        shared_ptr<UnionFind> second = array->find(second_group)->findhead();
 
         if(first->fleetId == second->fleetId){ // means that the two groups had been merged before
             return StatusType::INVALID_INPUT;
         }
 
 
-        UnionFind* bigger = (first->size >= second->size) ? first : second;
-        UnionFind* smaller = (first->size < second->size) ? first : second;
+        shared_ptr<UnionFind> bigger = (first->size >= second->size) ? first : second;
+        shared_ptr<UnionFind> smaller = (first->size < second->size) ? first : second;
 
-		UnionFind* bigger_pirates = (first->numOfPirates >= second->numOfPirates) ? first : second;
+		shared_ptr<UnionFind> bigger_pirates = (first->numOfPirates >= second->numOfPirates) ? first : second;
 
 
         if( array->find(first_group)->findhead()->fleetId == bigger ->fleetId){
@@ -324,7 +324,7 @@ StatusType oceans_t::Union(int first_group , int second_group){
 		// smaller in terms of number of ships
         smaller->father = bigger;
 
-        //UnionFind* smaller_pirates = (first->numOfPirates < second->numOfPirates) ? first : second;
+        //shared_ptr<UnionFind> smaller_pirates = (first->numOfPirates < second->numOfPirates) ? first : second;
 
 		bigger->fleetId=bigger_pirates->fleetId;
 		smaller->extra += bigger->size;
@@ -338,15 +338,15 @@ StatusType oceans_t::Union(int first_group , int second_group){
 
 	StatusType oceans_t::Union(int first_group, int second_group) {
 
-    UnionFind* first = array->find(first_group)->findhead();
-    UnionFind* second = array->find(second_group)->findhead();
+    shared_ptr<UnionFind> first = array->find(first_group)->findhead();
+    shared_ptr<UnionFind> second = array->find(second_group)->findhead();
 
     if (first->fleetId == second->fleetId) { // Groups are already merged
         return StatusType::INVALID_INPUT;
     }
 
-    UnionFind* bigger = (first->size >= second->size) ? first : second;
-    UnionFind* smaller = (first->size < second->size) ? first : second;
+    shared_ptr<UnionFind> bigger = (first->size >= second->size) ? first : second;
+    shared_ptr<UnionFind> smaller = (first->size < second->size) ? first : second;
 
 	// the rank of the smaller pirates group will
 	// get the extra value of the bigger pirates group
@@ -395,8 +395,8 @@ StatusType oceans_t::unite_fleets(int fleetId1, int fleetId2) {
 	//int newFleetId = (ships1 >= ships2) ? fleetId1 : fleetId2;
 	//int oldFleetId = (newFleetId == fleetId1) ? fleetId2 : fleetId1;
 
-	//UnionFind* biggerFleet = this->array->find(newFleetId)->findhead();
-	//UnionFind* smallerFleet = this->array->find(oldFleetId)->findhead();
+	//shared_ptr<UnionFind> biggerFleet = this->array->find(newFleetId)->findhead();
+	//shared_ptr<UnionFind> smallerFleet = this->array->find(oldFleetId)->findhead();
 
 	// my code, union the two fleets in union find data structure
 	try {

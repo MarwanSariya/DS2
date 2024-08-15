@@ -23,7 +23,7 @@ class oceans_t {
 private:
 
 
-	genericHash<int,UnionFind*>* array;
+	genericHash<int,shared_ptr<UnionFind>>* array;
 	// we are using dynami array of UnionFind pointers to represent the fleets
 
 	int numOfElements; // meaning the numer of fleets
