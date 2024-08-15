@@ -58,25 +58,7 @@ public:
     int tableSize;
     int numofElements;
 
-//    void expand() {
-//        int newSize = tableSize * 2;
-//        LinkedList* newTable = new LinkedList[newSize];
-//
-//        for (int i = 0; i < tableSize; i++) {
-//            Node* current = table[i].head;
-//            while (current != nullptr) {
-//                int newIndex = current->fleetId % newSize;
-//                Node* next = current->next;
-//                current->next = newTable[newIndex].head;
-//                newTable[newIndex].head = current;
-//                current = next;
-//            }
-//        }
-//
-//        delete[] table;
-//        table = newTable;
-//        tableSize = newSize;
-//    }
+
 
 
 ////////// my expand

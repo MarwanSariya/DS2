@@ -3,12 +3,6 @@
 
 
 
-//oceans_t::oceans_t() : array(new genericHash<int,shared_ptr<UnionFind>>(128)), fleetTable(M), pirateTable(N1)
-//{
-//
-//}
-
-
 //////////// my construct
 
 oceans_t::oceans_t() : array(nullptr),  numOfElements(0), realSize(0), fleetTable(M), pirateTable(N1) {
@@ -16,112 +10,8 @@ oceans_t::oceans_t() : array(nullptr),  numOfElements(0), realSize(0), fleetTabl
     realSize = 128;
 }
 
-//oceans_t::~oceans_t() {
-//	 //Clean up fleets
-//	delete[] array;
-//    array = nullptr;
-//
-//	 for (int i = 0; i < fleetTable.tableSize; ++i) {
-//	 	LinkedList& list = fleetTable.table[i];
-//	 	Node* current = list.head;
-//	 	while (current != nullptr) {
-//	 		Node* toDelete = current;
-//	 		current = current->next;
-//	 		delete toDelete;
-//	 	}
-//	 }
-//	 delete[] fleetTable.table; // Clean up the array of LinkedLists
-//     fleetTable.table= nullptr;
-//
-//	 // Clean up pirates
-//	 for (int i = 0; i < pirateTable.tableSize; ++i) {
-//	 	PirateLinkedList& list = pirateTable.table[i];
-//	 	PirateNode* current = list.head;
-//	 	while (current != nullptr) {
-//	 		PirateNode* toDelete = current;
-//	 		current = current->next;
-//	 		delete toDelete;
-//	 	}
-//	 }
-//	 delete[] pirateTable.table; // Clean up the array of PirateLinkedLists
-//     pirateTable.table= nullptr;
-//}
 
-//////// my destructor
-//oceans_t::~oceans_t() {
-//    // Clean up the genericHash array
-//    if (array) {
-//        for (size_t i = 0; i < array->getCapacity(); ++i) {
-//            UnionFind *uf = (*array)[i];
-//            if (uf != nullptr) {
-//                delete uf;
-//            }
-//        }
-//        delete array;
-//        array = nullptr;
-//    }
-//}
-//
-//    // Clean up fleets
-//    for (int i = 0; i < fleetTable.tableSize; ++i) {
-//        LinkedList& list = fleetTable.table[i];
-//        Node* current = list.head;
-//        while (current != nullptr) {
-//            Node* toDelete = current;
-//            current = current->next;
-//            delete toDelete;
-//        }
-//    }
-//    delete[] fleetTable.table; // Clean up the array of LinkedLists
-//    fleetTable.table = nullptr;
-//
-//    // Clean up pirates
-//    for (int i = 0; i < pirateTable.tableSize; ++i) {
-//        PirateLinkedList& list = pirateTable.table[i];
-//        PirateNode* current = list.head;
-//        while (current != nullptr) {
-//            PirateNode* toDelete = current;
-//            current = current->next;
-//            delete toDelete;
-//        }
-//    }
-//    delete[] pirateTable.table; // Clean up the array of PirateLinkedLists
-//    pirateTable.table= nullptr;
-
-//delete array;
-//}
-
-
-//////// chat desrtructor
-
-//oceans_t::~oceans_t(){
-//    for (int i = 0; i < numOfElements; ++i) {
-//        shared_ptr<UnionFind> fleet = array->find(i);
-//        delete fleet;
-//    }
-//    delete array; // Clean up dynamically allocated memory for the array
-//}
-
-/////
-//oceans_t::~oceans_t() {
-//    if (array) {
-//        for (int i = 0; i < numOfElements; ++i) {
-//            shared_ptr<UnionFind> fleet = array->find(i);
-//            delete fleet;
-//        }
-//        delete array; // Clean up dynamically allocated memory for the array
-//    }
-//}
 oceans_t::~oceans_t() {
-    // if (array) {
-    //     for (int i = 0; i < realSize; ++i) {
-    //         shared_ptr<UnionFind> fleet = array->find(i);
-    //         if (fleet != nullptr) {
-    //             delete fleet;
-    //         }
-    //     }
-    //     delete array; // Clean up dynamically allocated memory for the array
-    // }
 	delete array;
 }
 
@@ -286,57 +176,7 @@ output_t<int> oceans_t::get_pirate_money(int pirateId) {
 	}
 }
 
-
-/*
-StatusType oceans_t::Union(int first_group , int second_group){
-
-        shared_ptr<UnionFind> first = array->find(first_group)->findhead();
-        shared_ptr<UnionFind> second = array->find(second_group)->findhead();
-
-        if(first->fleetId == second->fleetId){ // means that the two groups had been merged before
-            return StatusType::INVALID_INPUT;
-        }
-
-
-        shared_ptr<UnionFind> bigger = (first->size >= second->size) ? first : second;
-        shared_ptr<UnionFind> smaller = (first->size < second->size) ? first : second;
-
-		shared_ptr<UnionFind> bigger_pirates = (first->numOfPirates >= second->numOfPirates) ? first : second;
-
-
-        if( array->find(first_group)->findhead()->fleetId == bigger ->fleetId){
-            //bigger->extra += getValue(smaller->owner)*factor;
-            smaller->extra -= bigger->extra;
-
-            //bigger->CompanyVal += getValue(smaller->GroupID)*factor;
-
-            //smaller->CompanyVal -= bigger->extra;
-        }else{// first acquirer = smaller
-            // smaller buys bigger
-
-           // smaller->extra += getValue(bigger->owner)* factor;
-            smaller->extra -= bigger->extra;
-
-            //bigger->owner = smaller->owner;
-
-        }
-
-		// smaller in terms of number of ships
-        smaller->father = bigger;
-
-        //shared_ptr<UnionFind> smaller_pirates = (first->numOfPirates < second->numOfPirates) ? first : second;
-
-		bigger->fleetId=bigger_pirates->fleetId;
-		smaller->extra += bigger->size;
-		bigger->numOfPirates += smaller->numOfPirates; // update the number of pirates
-
-        bigger->size += smaller->size; //update the number of ships
-        return StatusType::SUCCESS;
-    }
-
-	*/
-
-	StatusType oceans_t::Union(int first_group, int second_group) {
+StatusType oceans_t::Union(int first_group, int second_group) {
 
     shared_ptr<UnionFind> first = array->find(first_group)->findhead();
     shared_ptr<UnionFind> second = array->find(second_group)->findhead();
@@ -390,13 +230,6 @@ StatusType oceans_t::unite_fleets(int fleetId1, int fleetId2) {
 	if (numOfPirates1 <=0 || numOfPirates2 <=0) {
 		return StatusType::FAILURE; // Failure to retrieve number of ships
 	}
-
-	// Determine which fleet ID to keep
-	//int newFleetId = (ships1 >= ships2) ? fleetId1 : fleetId2;
-	//int oldFleetId = (newFleetId == fleetId1) ? fleetId2 : fleetId1;
-
-	//shared_ptr<UnionFind> biggerFleet = this->array->find(newFleetId)->findhead();
-	//shared_ptr<UnionFind> smallerFleet = this->array->find(oldFleetId)->findhead();
 
 	// my code, union the two fleets in union find data structure
 	try {
